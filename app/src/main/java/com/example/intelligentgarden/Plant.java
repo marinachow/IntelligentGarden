@@ -11,6 +11,8 @@ public class Plant {
     private final String name;
     private int qty;
     private ArrayList<Plant> enemies;
+    private int[] rows;
+    private int[] cols;
 
     public Plant(JSONObject jObject) throws JSONException {
         this.id =jObject.optInt("id");
