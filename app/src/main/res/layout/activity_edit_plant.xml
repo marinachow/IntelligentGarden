@@ -115,14 +115,4 @@
         app:layout_constraintStart_toEndOf="@+id/buttonCancel"
         app:layout_constraintTop_toBottomOf="@+id/tableLayout" />
 
-    <Button
-        android:id="@+id/buttonMyGarden"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="92dp"
-        android:text="My Garden"
-        app:layout_constraintEnd_toEndOf="@+id/buttonOk"
-        app:layout_constraintStart_toStartOf="@+id/buttonCancel"
-        app:layout_constraintTop_toBottomOf="@+id/tableLayout" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

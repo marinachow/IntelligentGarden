@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.InputFilter;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -105,10 +106,11 @@ public class EditPlantActivity extends AppCompatActivity {
         final EditText qtyEditTxt = (EditText) findViewById(R.id.editTextQty);
         TextView idTxt = (TextView) findViewById(R.id.textViewId);
 
+        // Edit
         if(id != 0) {
             idTxt.setText(""+id);
             nameEditTxt.setText(name);
-            qtyEditTxt.setText(qty);
+            qtyEditTxt.setText(""+qty);
             buttonCancel.setText("Delete");
             buttonOk.setText("Edit");
         }
@@ -116,16 +118,15 @@ public class EditPlantActivity extends AppCompatActivity {
         buttonCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Delete
                 if (id != 0) {
-                    try {
-                        //ConnectionRest connectionRest = new ConnectionRest();
-                        JSONObject plant = new JSONObject();
-                        plant.put("id", id);
-                        //connectionRest.setJsonObj(plant);
-                        //connectionRest.execute("DELETE");
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+                    String selectionClause = PlantProvider._ID +  " = ?";
+                    String[] selectionArgs = {""+id};
+                    getContentResolver().delete(
+                            PlantProvider.CONTENT_URI,
+                            selectionClause,
+                            selectionArgs
+                    );
                 }
                 Intent intent = new Intent(EditPlantActivity.this, DisplayGardenActivity.class);
                 intent.putExtra("numRows", numRows);
@@ -137,20 +138,27 @@ public class EditPlantActivity extends AppCompatActivity {
         buttonOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    ContentValues values = new ContentValues();
+                // Edit
+                if (id != 0) {
+                    ContentValues updateValues = new ContentValues();
+                    String selectionClause = PlantProvider._ID +  " = ?";
+                    String[] selectionArgs = {""+id};
 
+                    updateValues.put(PlantProvider.NAME, nameEditTxt.getText().toString());
+                    updateValues.put(PlantProvider.QTY, Integer.parseInt(qtyEditTxt.getText().toString()));
+                    getContentResolver().update(
+                            PlantProvider.CONTENT_URI,
+                            updateValues,
+                            selectionClause,
+                            selectionArgs
+                    );
+                } else {
+                    ContentValues values = new ContentValues();
                     values.put(PlantProvider.NAME, nameEditTxt.getText().toString());
                     values.put(PlantProvider.QTY, qtyEditTxt.getText().toString());
 
-                    Uri uri = getContentResolver().insert(PlantProvider.CONTENT_URI, values);
-
-                    Toast.makeText(getBaseContext(), uri.toString(), Toast.LENGTH_LONG).show();
-            }
-        });
-
-        buttonMyGarden.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+                    getContentResolver().insert(PlantProvider.CONTENT_URI, values);
+                }
                 Intent intent = new Intent(EditPlantActivity.this, DisplayGardenActivity.class);
                 intent.putExtra("numRows", numRows);
                 intent.putExtra("numCols", numCols);

@@ -1,5 +1,6 @@
 package com.example.intelligentgarden;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.drawable.Drawable;
@@ -58,14 +59,14 @@ public class DisplayGardenActivity extends AppCompatActivity {
             TableRow row = new TableRow(this);
             row.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT));
             for (int j = 0; j < numCols; j++) {
-                TextView plant = new TextView(this);
-                plant.setText("Empty");
-                plant.setWidth(150);
-                plant.setHeight(150);
-                plant.setBackground(ContextCompat.getDrawable(this, R.drawable.border));
-                plant.setGravity(Gravity.CENTER);
-                plant.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT));
-                row.addView(plant);
+                TextView square = new TextView(this);
+                square.setText("Empty");
+                square.setWidth(150);
+                square.setHeight(150);
+                square.setBackground(ContextCompat.getDrawable(this, R.drawable.border));
+                square.setGravity(Gravity.CENTER);
+                square.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT));
+                row.addView(square);
             }
             gardenGrid.addView(row, new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT));
         }
@@ -77,9 +78,12 @@ public class DisplayGardenActivity extends AppCompatActivity {
         ArrayList<Plant> allPlants = new ArrayList<>();
         if (c.moveToFirst()) {
             do {
+                @SuppressLint("Range")
                 int id = Integer.parseInt(c.getString(c.getColumnIndex(PlantProvider._ID)));
-                String name = c.getString(c.getColumnIndex( PlantProvider.NAME));
-                int qty = Integer.parseInt(c.getString(c.getColumnIndex( PlantProvider.QTY)));
+                @SuppressLint("Range")
+                String name = c.getString(c.getColumnIndex(PlantProvider.NAME));
+                @SuppressLint("Range")
+                int qty = Integer.parseInt(c.getString(c.getColumnIndex(PlantProvider.QTY)));
                 Plant newPlant = new Plant(id, name, qty);
                 allPlants.add(newPlant);
             } while (c.moveToNext());
@@ -87,26 +91,35 @@ public class DisplayGardenActivity extends AppCompatActivity {
 
         int allPlantsIdx = 0;
         int curPlantCount = 0;
-        int qty = allPlants.get(allPlantsIdx).getQty();
+        int curPlantQty = allPlants.get(allPlantsIdx).getQty();
         outerLoop:
         for (int i = 0; i < numRows; i++) {
             TableRow row = (TableRow) gardenGrid.getChildAt(i);
                 for (int j = 0; j < numCols; j++) {
                     TextView square = (TextView) row.getChildAt(j);
-                    square.setText(allPlants.get(allPlantsIdx).getName());
+                    Plant curPlant = allPlants.get(allPlantsIdx);
+                    square.setText(curPlant.getName());
+                    square.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Intent intent = new Intent(DisplayGardenActivity.this, EditPlantActivity.class);
+                            intent.putExtra("id", curPlant.getId());
+                            intent.putExtra("name", curPlant.getName());
+                            intent.putExtra("qty", curPlant.getQty());
+                            intent.putExtra("numRows", numRows);
+                            intent.putExtra("numCols", numCols);
+                            startActivity(intent);
+                        }
+                    });
                     curPlantCount++;
-                    System.out.println(allPlants.get(allPlantsIdx).getName());
-                    System.out.println("qty:" + qty);
-                    System.out.println("count:" + curPlantCount);
-                    if (qty <= curPlantCount) {
+                    if (curPlantQty == curPlantCount) {
                         allPlantsIdx++;
-                        curPlantCount = 0;
-                        qty = allPlants.get(allPlantsIdx).getQty();
                         if (allPlantsIdx == allPlants.size()) {
                             break outerLoop;
                         }
+                        curPlantCount = 0;
+                        curPlantQty = allPlants.get(allPlantsIdx).getQty();
                     }
-
                 }
         }
     }
