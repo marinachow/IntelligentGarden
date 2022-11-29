@@ -1,7 +1,9 @@
 package com.example.intelligentgarden;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -9,10 +11,12 @@ import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import java.sql.Array;
 import java.sql.SQLOutput;
 import java.util.ArrayList;
 
@@ -27,6 +31,7 @@ public class DisplayGardenActivity extends AppCompatActivity {
         Button addPlantButton = (Button) findViewById(R.id.AddPlantButton);
         Button editSurfaceButton = (Button) findViewById(R.id.EditSurfaceButton);
         TableLayout gardenGrid = (TableLayout) findViewById(R.id.tableLayout);
+
         int numRows = getIntent().getIntExtra("numRows", 1);
         int numCols = getIntent().getIntExtra("numCols", 1);
 
@@ -34,6 +39,8 @@ public class DisplayGardenActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(DisplayGardenActivity.this, EditPlantActivity.class);
+                intent.putExtra("numRows", numRows);
+                intent.putExtra("numCols", numCols);
                 startActivity(intent);
             }
         });
@@ -61,6 +68,46 @@ public class DisplayGardenActivity extends AppCompatActivity {
                 row.addView(plant);
             }
             gardenGrid.addView(row, new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT));
+        }
+
+        String URL = "content://com.example.intelligentgarden.PlantProvider";
+
+        Uri plants = Uri.parse(URL);
+        Cursor c = managedQuery(plants, null, null, null, "name");
+        ArrayList<Plant> allPlants = new ArrayList<>();
+        if (c.moveToFirst()) {
+            do {
+                int id = Integer.parseInt(c.getString(c.getColumnIndex(PlantProvider._ID)));
+                String name = c.getString(c.getColumnIndex( PlantProvider.NAME));
+                int qty = Integer.parseInt(c.getString(c.getColumnIndex( PlantProvider.QTY)));
+                Plant newPlant = new Plant(id, name, qty);
+                allPlants.add(newPlant);
+            } while (c.moveToNext());
+        }
+
+        int allPlantsIdx = 0;
+        int curPlantCount = 0;
+        int qty = allPlants.get(allPlantsIdx).getQty();
+        outerLoop:
+        for (int i = 0; i < numRows; i++) {
+            TableRow row = (TableRow) gardenGrid.getChildAt(i);
+                for (int j = 0; j < numCols; j++) {
+                    TextView square = (TextView) row.getChildAt(j);
+                    square.setText(allPlants.get(allPlantsIdx).getName());
+                    curPlantCount++;
+                    System.out.println(allPlants.get(allPlantsIdx).getName());
+                    System.out.println("qty:" + qty);
+                    System.out.println("count:" + curPlantCount);
+                    if (qty <= curPlantCount) {
+                        allPlantsIdx++;
+                        curPlantCount = 0;
+                        qty = allPlants.get(allPlantsIdx).getQty();
+                        if (allPlantsIdx == allPlants.size()) {
+                            break outerLoop;
+                        }
+                    }
+
+                }
         }
     }
 }

@@ -3,14 +3,19 @@ package com.example.intelligentgarden;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.text.InputFilter;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,8 +35,15 @@ public class EditPlantActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_plant);
 
+        int numRows = getIntent().getIntExtra("numRows", 1);
+        int numCols = getIntent().getIntExtra("numCols", 1);
+
         textViewEnemies = findViewById(R.id.textViewEnemies);
         selectedEnemies = new boolean[enemyArray.length];
+
+        Button buttonCancel = (Button) findViewById(R.id.buttonCancel);
+        Button buttonOk = (Button) findViewById(R.id.buttonOk);
+        Button buttonMyGarden = (Button) findViewById(R.id.buttonMyGarden);
 
         textViewEnemies.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,12 +102,8 @@ public class EditPlantActivity extends AppCompatActivity {
         int qty = getIntent().getIntExtra("qty", 0);
 
         final EditText nameEditTxt = (EditText) findViewById(R.id.editTextName);
-        Spinner spinnerQty = (Spinner) findViewById(R.id.spinnerQty);
-        final EditText qtyEditTxt = (EditText) spinnerQty.getSelectedItem();
+        final EditText qtyEditTxt = (EditText) findViewById(R.id.editTextQty);
         TextView idTxt = (TextView) findViewById(R.id.textViewId);
-
-        Button buttonCancel = (Button) findViewById(R.id.buttonCancel);
-        Button buttonOk = (Button) findViewById(R.id.buttonOk);
 
         if(id != 0) {
             idTxt.setText(""+id);
@@ -120,6 +128,8 @@ public class EditPlantActivity extends AppCompatActivity {
                     }
                 }
                 Intent intent = new Intent(EditPlantActivity.this, DisplayGardenActivity.class);
+                intent.putExtra("numRows", numRows);
+                intent.putExtra("numCols", numCols);
                 startActivity(intent);
             }
         });
@@ -127,26 +137,24 @@ public class EditPlantActivity extends AppCompatActivity {
         buttonOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    //ConnectionRest connectionRest = new ConnectionRest();
-                    JSONObject plant = new JSONObject();
-                    if (id != 0){
-                        plant.put("id", id);
-                    }
-                    plant.put("name", nameEditTxt.getText().toString());
-                    plant.put("qty", qtyEditTxt.getText().toString());
-                    //connectionRest.setJsonObj(plant);
-                    if (id != 0){
-                        //connectionRest.execute("PUT");
-                    } else {
-                        //connectionRest.execute("POST");
-                    }
+                    ContentValues values = new ContentValues();
 
-                    Intent intent = new Intent(EditPlantActivity.this, DisplayGardenActivity.class);
-                    startActivity(intent);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                    values.put(PlantProvider.NAME, nameEditTxt.getText().toString());
+                    values.put(PlantProvider.QTY, qtyEditTxt.getText().toString());
+
+                    Uri uri = getContentResolver().insert(PlantProvider.CONTENT_URI, values);
+
+                    Toast.makeText(getBaseContext(), uri.toString(), Toast.LENGTH_LONG).show();
+            }
+        });
+
+        buttonMyGarden.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(EditPlantActivity.this, DisplayGardenActivity.class);
+                intent.putExtra("numRows", numRows);
+                intent.putExtra("numCols", numCols);
+                startActivity(intent);
             }
         });
     }

@@ -14,17 +14,10 @@ public class Plant {
     private int[] rows;
     private int[] cols;
 
-    public Plant(JSONObject jObject) throws JSONException {
-        this.id =jObject.optInt("id");
-        this.name = jObject.optString("name");
-        this.qty = jObject.optInt("qty");
-        this.enemies = new ArrayList<>();
-        JSONArray jArray = jObject.optJSONArray("enemies");
-        if (jArray != null) {
-            for (int i=0;i<jArray.length();i++){
-                this.enemies.add((Plant) jArray.get(i));
-            }
-        }
+    public Plant(int id, String name, int qty) {
+        this.id = id;
+        this.name = name;
+        this.qty = qty;
     }
 
     public int getId() {
@@ -41,5 +34,14 @@ public class Plant {
 
     public ArrayList<Plant> getEnemies() {
         return enemies;
+    }
+
+    @Override
+    public String toString() {
+        return "Plant{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", qty=" + qty +
+                '}';
     }
 }

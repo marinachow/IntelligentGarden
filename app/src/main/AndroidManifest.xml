@@ -53,6 +53,8 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+        <provider android:name="PlantProvider"
+            android:authorities="com.example.intelligentgarden.PlantProvider"/>
     </application>
 
 </manifest>
