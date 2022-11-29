@@ -88,39 +88,40 @@ public class DisplayGardenActivity extends AppCompatActivity {
                 allPlants.add(newPlant);
             } while (c.moveToNext());
         }
-
-        int allPlantsIdx = 0;
-        int curPlantCount = 0;
-        int curPlantQty = allPlants.get(allPlantsIdx).getQty();
-        outerLoop:
-        for (int i = 0; i < numRows; i++) {
-            TableRow row = (TableRow) gardenGrid.getChildAt(i);
-                for (int j = 0; j < numCols; j++) {
-                    TextView square = (TextView) row.getChildAt(j);
-                    Plant curPlant = allPlants.get(allPlantsIdx);
-                    square.setText(curPlant.getName());
-                    square.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            Intent intent = new Intent(DisplayGardenActivity.this, EditPlantActivity.class);
-                            intent.putExtra("id", curPlant.getId());
-                            intent.putExtra("name", curPlant.getName());
-                            intent.putExtra("qty", curPlant.getQty());
-                            intent.putExtra("numRows", numRows);
-                            intent.putExtra("numCols", numCols);
-                            startActivity(intent);
+        if (allPlants.size() > 0) {
+            int allPlantsIdx = 0;
+            int curPlantCount = 0;
+            int curPlantQty = allPlants.get(allPlantsIdx).getQty();
+            outerLoop:
+            for (int i = 0; i < numRows; i++) {
+                TableRow row = (TableRow) gardenGrid.getChildAt(i);
+                    for (int j = 0; j < numCols; j++) {
+                        TextView square = (TextView) row.getChildAt(j);
+                        Plant curPlant = allPlants.get(allPlantsIdx);
+                        square.setText(curPlant.getName());
+                        square.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent intent = new Intent(DisplayGardenActivity.this, EditPlantActivity.class);
+                                intent.putExtra("id", curPlant.getId());
+                                intent.putExtra("name", curPlant.getName());
+                                intent.putExtra("qty", curPlant.getQty());
+                                intent.putExtra("numRows", numRows);
+                                intent.putExtra("numCols", numCols);
+                                startActivity(intent);
+                            }
+                        });
+                        curPlantCount++;
+                        if (curPlantQty == curPlantCount) {
+                            allPlantsIdx++;
+                            if (allPlantsIdx == allPlants.size()) {
+                                break outerLoop;
+                            }
+                            curPlantCount = 0;
+                            curPlantQty = allPlants.get(allPlantsIdx).getQty();
                         }
-                    });
-                    curPlantCount++;
-                    if (curPlantQty == curPlantCount) {
-                        allPlantsIdx++;
-                        if (allPlantsIdx == allPlants.size()) {
-                            break outerLoop;
-                        }
-                        curPlantCount = 0;
-                        curPlantQty = allPlants.get(allPlantsIdx).getQty();
                     }
-                }
+            }
         }
     }
 }
