@@ -3,33 +3,30 @@ package com.example.intelligentgarden;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.text.InputFilter;
-import android.text.TextUtils;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
 
 public class EditPlantActivity extends AppCompatActivity {
 
     TextView textViewEnemies;
     boolean[] selectedEnemies;
     ArrayList<Integer> enemyList = new ArrayList<>();
-    String[] enemyArray = {"Java", "C++", "Kotlin", "C", "Python", "Javascript"};
+    String[] allPlants = getAllPlants().stream().map(Plant::getName)
+            .collect(Collectors.toList()).toArray(new String[getAllPlants().size()]);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,11 +37,7 @@ public class EditPlantActivity extends AppCompatActivity {
         int numCols = getIntent().getIntExtra("numCols", 1);
 
         textViewEnemies = findViewById(R.id.textViewEnemies);
-        selectedEnemies = new boolean[enemyArray.length];
-
-        Button buttonCancel = (Button) findViewById(R.id.buttonCancel);
-        Button buttonOk = (Button) findViewById(R.id.buttonOk);
-        Button buttonMyGarden = (Button) findViewById(R.id.buttonMyGarden);
+        selectedEnemies = new boolean[allPlants.length];
 
         textViewEnemies.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,7 +45,7 @@ public class EditPlantActivity extends AppCompatActivity {
                 AlertDialog.Builder builder = new AlertDialog.Builder(EditPlantActivity.this);
                 builder.setTitle("Select Enemies");
                 builder.setCancelable(false);
-                builder.setMultiChoiceItems(enemyArray, selectedEnemies, new DialogInterface.OnMultiChoiceClickListener() {
+                builder.setMultiChoiceItems(allPlants, selectedEnemies, new DialogInterface.OnMultiChoiceClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i, boolean b) {
                         if (b) {
@@ -69,7 +62,7 @@ public class EditPlantActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialogInterface, int i) {
                         StringBuilder stringBuilder = new StringBuilder();
                         for (int j = 0; j < enemyList.size(); j++) {
-                            stringBuilder.append(enemyArray[enemyList.get(j)]);
+                            stringBuilder.append(allPlants[enemyList.get(j)]);
                             if (j != enemyList.size() - 1) {
                                 stringBuilder.append(", ");
                             }
@@ -106,27 +99,30 @@ public class EditPlantActivity extends AppCompatActivity {
         final EditText qtyEditTxt = (EditText) findViewById(R.id.editTextQty);
         TextView idTxt = (TextView) findViewById(R.id.textViewId);
 
-        // Edit
-        if(id != 0) {
+        Button buttonCancel = (Button) findViewById(R.id.buttonCancel);
+        Button buttonOk = (Button) findViewById(R.id.buttonOk);
+
+        if(id!=0){
             idTxt.setText(""+id);
             nameEditTxt.setText(name);
             qtyEditTxt.setText(""+qty);
-            buttonCancel.setText("Delete");
-            buttonOk.setText("Edit");
+            buttonCancel.setText("Supprimer");
+            buttonOk.setText("Modifier");
         }
 
         buttonCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Delete
-                if (id != 0) {
-                    String selectionClause = PlantProvider._ID +  " = ?";
-                    String[] selectionArgs = {""+id};
-                    getContentResolver().delete(
-                            PlantProvider.CONTENT_URI,
-                            selectionClause,
-                            selectionArgs
-                    );
+                if(id!=0){ // Suppression
+                    try {
+                        ConnectionRest connectionRest = new ConnectionRest();
+                        JSONObject plant = new JSONObject();
+                        plant.put("id", id);
+                        connectionRest.setJsonObj(plant);
+                        connectionRest.execute("DELETE");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
                 Intent intent = new Intent(EditPlantActivity.this, DisplayGardenActivity.class);
                 intent.putExtra("numRows", numRows);
@@ -138,32 +134,44 @@ public class EditPlantActivity extends AppCompatActivity {
         buttonOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Edit
-                if (id != 0) {
-                    ContentValues updateValues = new ContentValues();
-                    String selectionClause = PlantProvider._ID +  " = ?";
-                    String[] selectionArgs = {""+id};
+                try {
+                    ConnectionRest connectionRest = new ConnectionRest();
+                    JSONObject plant = new JSONObject();
+                    if(id!=0){
+                        plant.put("id", id);
+                    }
+                    plant.put("name", nameEditTxt.getText().toString());
+                    plant.put("qty", Integer.parseInt(qtyEditTxt.getText().toString()));
+                    connectionRest.setJsonObj(plant);
+                    if(id!=0){
+                        connectionRest.execute("PUT"); // Modification
+                    }else {
+                        connectionRest.execute("POST"); // Création
+                    }
 
-                    updateValues.put(PlantProvider.NAME, nameEditTxt.getText().toString());
-                    updateValues.put(PlantProvider.QTY, Integer.parseInt(qtyEditTxt.getText().toString()));
-                    getContentResolver().update(
-                            PlantProvider.CONTENT_URI,
-                            updateValues,
-                            selectionClause,
-                            selectionArgs
-                    );
-                } else {
-                    ContentValues values = new ContentValues();
-                    values.put(PlantProvider.NAME, nameEditTxt.getText().toString());
-                    values.put(PlantProvider.QTY, qtyEditTxt.getText().toString());
-
-                    getContentResolver().insert(PlantProvider.CONTENT_URI, values);
+                    Intent intent = new Intent(EditPlantActivity.this, DisplayGardenActivity.class);
+                    intent.putExtra("numRows", numRows);
+                    intent.putExtra("numCols", numCols);
+                    startActivity(intent);
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-                Intent intent = new Intent(EditPlantActivity.this, DisplayGardenActivity.class);
-                intent.putExtra("numRows", numRows);
-                intent.putExtra("numCols", numCols);
-                startActivity(intent);
             }
         });
+    }
+    public ArrayList<Plant> getAllPlants(){
+        try{
+            ConnectionRest connectionRest = new ConnectionRest();
+            connectionRest.execute("GET");
+            String listJsonObjs = connectionRest.get();
+            if (listJsonObjs != null) {
+                return connectionRest.parse(listJsonObjs);
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
