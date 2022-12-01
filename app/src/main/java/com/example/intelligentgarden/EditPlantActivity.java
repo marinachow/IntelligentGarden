@@ -22,22 +22,48 @@ import java.util.stream.Collectors;
 
 public class EditPlantActivity extends AppCompatActivity {
 
-    TextView textViewEnemies;
-    boolean[] selectedEnemies;
-    ArrayList<Integer> enemyList = new ArrayList<>();
-    String[] allPlants = getAllPlants().stream().map(Plant::getName)
-            .collect(Collectors.toList()).toArray(new String[getAllPlants().size()]);
+    List<String> allPlantNamesList = getAllPlants().stream().map(Plant::getName)
+            .collect(Collectors.toList());
+    String[] allPlantNamesArray = allPlantNamesList.toArray(new String[allPlantNamesList.size()]);
+    Plant[] allPlantsArray = getAllPlants().toArray(new Plant[getAllPlants().size()]);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_plant);
 
+        final int id = getIntent().getIntExtra("id", 0);
+        String name = getIntent().getStringExtra("name");
+        int qty = getIntent().getIntExtra("qty", 0);
+        ArrayList<Plant> enemies = getIntent().getParcelableArrayListExtra("enemies");
+
+        final EditText nameEditTxt = (EditText) findViewById(R.id.editTextName);
+        final EditText qtyEditTxt = (EditText) findViewById(R.id.editTextQty);
+        TextView idTxt = (TextView) findViewById(R.id.textViewId);
+
+        Button buttonCancel = (Button) findViewById(R.id.buttonCancel);
+        Button buttonOk = (Button) findViewById(R.id.buttonOk);
+
         int numRows = getIntent().getIntExtra("numRows", 1);
         int numCols = getIntent().getIntExtra("numCols", 1);
 
+        TextView textViewEnemies;
+        boolean[] selectedEnemies;
+        ArrayList<Plant> finalSelectedEnemies = new ArrayList<>();
+        ArrayList<Integer> enemyList = new ArrayList<>();
+
+        if(id!=0){
+            idTxt.setText(""+id);
+            nameEditTxt.setText(name);
+            qtyEditTxt.setText(""+qty);
+            buttonCancel.setText("Supprimer");
+            buttonOk.setText("Modifier");
+            allPlantNamesList.removeIf(str -> str.equals(name));
+            allPlantNamesArray = allPlantNamesList.toArray(new String[allPlantNamesList.size()]);
+        }
+
         textViewEnemies = findViewById(R.id.textViewEnemies);
-        selectedEnemies = new boolean[allPlants.length];
+        selectedEnemies = new boolean[allPlantNamesArray.length];
 
         textViewEnemies.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -45,7 +71,7 @@ public class EditPlantActivity extends AppCompatActivity {
                 AlertDialog.Builder builder = new AlertDialog.Builder(EditPlantActivity.this);
                 builder.setTitle("Select Enemies");
                 builder.setCancelable(false);
-                builder.setMultiChoiceItems(allPlants, selectedEnemies, new DialogInterface.OnMultiChoiceClickListener() {
+                builder.setMultiChoiceItems(allPlantNamesArray, selectedEnemies, new DialogInterface.OnMultiChoiceClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i, boolean b) {
                         if (b) {
@@ -62,7 +88,8 @@ public class EditPlantActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialogInterface, int i) {
                         StringBuilder stringBuilder = new StringBuilder();
                         for (int j = 0; j < enemyList.size(); j++) {
-                            stringBuilder.append(allPlants[enemyList.get(j)]);
+                            stringBuilder.append(allPlantNamesArray[enemyList.get(j)]);
+                            finalSelectedEnemies.add(allPlantsArray[enemyList.get(j)]);
                             if (j != enemyList.size() - 1) {
                                 stringBuilder.append(", ");
                             }
@@ -90,25 +117,6 @@ public class EditPlantActivity extends AppCompatActivity {
                 builder.show();
             }
         });
-
-        final int id = getIntent().getIntExtra("id", 0);
-        String name = getIntent().getStringExtra("name");
-        int qty = getIntent().getIntExtra("qty", 0);
-
-        final EditText nameEditTxt = (EditText) findViewById(R.id.editTextName);
-        final EditText qtyEditTxt = (EditText) findViewById(R.id.editTextQty);
-        TextView idTxt = (TextView) findViewById(R.id.textViewId);
-
-        Button buttonCancel = (Button) findViewById(R.id.buttonCancel);
-        Button buttonOk = (Button) findViewById(R.id.buttonOk);
-
-        if(id!=0){
-            idTxt.setText(""+id);
-            nameEditTxt.setText(name);
-            qtyEditTxt.setText(""+qty);
-            buttonCancel.setText("Supprimer");
-            buttonOk.setText("Modifier");
-        }
 
         buttonCancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -142,6 +150,7 @@ public class EditPlantActivity extends AppCompatActivity {
                     }
                     plant.put("name", nameEditTxt.getText().toString());
                     plant.put("qty", Integer.parseInt(qtyEditTxt.getText().toString()));
+                    plant.put("enemies", finalSelectedEnemies);
                     connectionRest.setJsonObj(plant);
                     if(id!=0){
                         connectionRest.execute("PUT"); // Modification
