@@ -38,11 +38,11 @@ public class ConnectionRest extends AsyncTask<String, Void, String> {
         InputStream is = null;
         String parameters = "";
         Log.v("methode", methode);
-        if(!methode.equals("POST")&&(jsonObj!=null)){
+        if (!methode.equals("POST") && (jsonObj != null)) {
             url += jsonObj.getInt("id");
         }
-        if(jsonObj != null){
-            if(methode.equals("PUT")){
+        if (jsonObj != null) {
+            if (methode.equals("PUT")) {
                 jsonObj.remove("id");
             }
             parameters  = "data="+ URLEncoder.encode(jsonObj.toString(), "utf-8");
@@ -53,13 +53,13 @@ public class ConnectionRest extends AsyncTask<String, Void, String> {
             conn.setRequestMethod(methode);
 
             // Pour les methode POST et PUT on envoie les parametre avec l'OutputStreamWriter
-            if(methode.equals("POST")||methode.equals("PUT")){
+            if (methode.equals("POST")||methode.equals("PUT")){
                 conn.setDoInput(true);
                 conn.setDoOutput(true);
                 OutputStreamWriter out = new OutputStreamWriter(conn.getOutputStream());
                 out.write(parameters);// here i sent the parameter
                 out.close();
-            }else{
+            } else {
                 conn.setDoInput(true);
                 conn.connect();
             }
@@ -93,7 +93,6 @@ public class ConnectionRest extends AsyncTask<String, Void, String> {
             for (int i = 0; i < jPlantArray.length(); i++) {
                 plants.add(new Plant(jPlantArray.optJSONObject(i)));
             }
-
             return plants;
         } catch (JSONException e) {
             Log.v("TAG","[JSONException] e : " + e.getMessage());

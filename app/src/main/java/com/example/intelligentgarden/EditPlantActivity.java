@@ -15,17 +15,16 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 public class EditPlantActivity extends AppCompatActivity {
-
     List<String> allPlantNamesList = getAllPlants().stream().map(Plant::getName)
             .collect(Collectors.toList());
     String[] allPlantNamesArray = allPlantNamesList.toArray(new String[allPlantNamesList.size()]);
-    Plant[] allPlantsArray = getAllPlants().toArray(new Plant[getAllPlants().size()]);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,21 +34,21 @@ public class EditPlantActivity extends AppCompatActivity {
         final int id = getIntent().getIntExtra("id", 0);
         String name = getIntent().getStringExtra("name");
         int qty = getIntent().getIntExtra("qty", 0);
-        ArrayList<Plant> enemies = getIntent().getParcelableArrayListExtra("enemies");
+        String[] enemyNames = getIntent().getStringArrayExtra("enemyNames");
 
-        final EditText nameEditTxt = (EditText) findViewById(R.id.editTextName);
-        final EditText qtyEditTxt = (EditText) findViewById(R.id.editTextQty);
-        TextView idTxt = (TextView) findViewById(R.id.textViewId);
+        final EditText nameEditTxt = findViewById(R.id.editTextName);
+        final EditText qtyEditTxt = findViewById(R.id.editTextQty);
+        TextView idTxt = findViewById(R.id.textViewId);
 
-        Button buttonCancel = (Button) findViewById(R.id.buttonCancel);
-        Button buttonOk = (Button) findViewById(R.id.buttonOk);
+        Button buttonCancel = findViewById(R.id.buttonCancel);
+        Button buttonOk = findViewById(R.id.buttonOk);
 
         int numRows = getIntent().getIntExtra("numRows", 1);
         int numCols = getIntent().getIntExtra("numCols", 1);
 
-        TextView textViewEnemies;
-        boolean[] selectedEnemies;
-        ArrayList<Plant> finalSelectedEnemies = new ArrayList<>();
+        TextView textViewEnemies = findViewById(R.id.textViewEnemies);
+        boolean[] selectedEnemies = new boolean[allPlantNamesArray.length];
+        ArrayList<String> finalSelectedEnemies = new ArrayList<>();
         ArrayList<Integer> enemyList = new ArrayList<>();
 
         if(id!=0){
@@ -60,10 +59,27 @@ public class EditPlantActivity extends AppCompatActivity {
             buttonOk.setText("Modifier");
             allPlantNamesList.removeIf(str -> str.equals(name));
             allPlantNamesArray = allPlantNamesList.toArray(new String[allPlantNamesList.size()]);
+            if (enemyNames != null) {
+                StringBuilder enemiesSB = new StringBuilder();
+                int curEnemy = 0;
+                for (int i = 0; i < allPlantNamesArray.length; i++) {
+                    if (curEnemy >= enemyNames.length) {
+                        break;
+                    }
+                    String curName = allPlantNamesArray[i];
+                    if (curName.equals(enemyNames[curEnemy])) {
+                        selectedEnemies[i] = true;
+                        enemyList.add(i);
+                        enemiesSB.append(curName);
+                        if (curEnemy != enemyNames.length - 1) {
+                            enemiesSB.append(", ");
+                        }
+                        curEnemy++;
+                    }
+                }
+                textViewEnemies.setText(enemiesSB);
+            }
         }
-
-        textViewEnemies = findViewById(R.id.textViewEnemies);
-        selectedEnemies = new boolean[allPlantNamesArray.length];
 
         textViewEnemies.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,10 +102,12 @@ public class EditPlantActivity extends AppCompatActivity {
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        System.out.println("allPlantNamesArray ");
+                        System.out.println(Arrays.toString(allPlantNamesArray));
                         StringBuilder stringBuilder = new StringBuilder();
                         for (int j = 0; j < enemyList.size(); j++) {
                             stringBuilder.append(allPlantNamesArray[enemyList.get(j)]);
-                            finalSelectedEnemies.add(allPlantsArray[enemyList.get(j)]);
+                            finalSelectedEnemies.add(allPlantNamesArray[enemyList.get(j)]);
                             if (j != enemyList.size() - 1) {
                                 stringBuilder.append(", ");
                             }
@@ -150,7 +168,7 @@ public class EditPlantActivity extends AppCompatActivity {
                     }
                     plant.put("name", nameEditTxt.getText().toString());
                     plant.put("qty", Integer.parseInt(qtyEditTxt.getText().toString()));
-                    plant.put("enemies", finalSelectedEnemies);
+                    plant.put("enemyNames", finalSelectedEnemies);
                     connectionRest.setJsonObj(plant);
                     if(id!=0){
                         connectionRest.execute("PUT"); // Modification

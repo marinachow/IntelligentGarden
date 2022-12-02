@@ -23,9 +23,9 @@ public class DisplayGardenActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_garden);
 
-        Button addPlantButton = (Button) findViewById(R.id.AddPlantButton);
-        Button editSurfaceButton = (Button) findViewById(R.id.EditSurfaceButton);
-        TableLayout gardenGrid = (TableLayout) findViewById(R.id.tableLayout);
+        Button addPlantButton = findViewById(R.id.AddPlantButton);
+        Button editSurfaceButton = findViewById(R.id.EditSurfaceButton);
+        TableLayout gardenGrid = findViewById(R.id.tableLayout);
 
         int numRows = getIntent().getIntExtra("numRows", 1);
         int numCols = getIntent().getIntExtra("numCols", 1);
@@ -84,6 +84,7 @@ public class DisplayGardenActivity extends AppCompatActivity {
                             intent.putExtra("id", curPlant.getId());
                             intent.putExtra("name", curPlant.getName());
                             intent.putExtra("qty", curPlant.getQty());
+                            intent.putExtra("enemyNames", curPlant.getEnemyNames());
                             intent.putExtra("numRows", numRows);
                             intent.putExtra("numCols", numCols);
                             startActivity(intent);
