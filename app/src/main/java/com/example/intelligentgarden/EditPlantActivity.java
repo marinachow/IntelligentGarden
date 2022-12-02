@@ -22,8 +22,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 public class EditPlantActivity extends AppCompatActivity {
-    List<String> allPlantNamesList = getAllPlants().stream().map(Plant::getName)
-            .collect(Collectors.toList());
+    List<String> allPlantNamesList = getAllPlants().stream().map(Plant::getName).collect(Collectors.toList());
     String[] allPlantNamesArray = allPlantNamesList.toArray(new String[allPlantNamesList.size()]);
 
     @Override
@@ -102,8 +101,6 @@ public class EditPlantActivity extends AppCompatActivity {
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        System.out.println("allPlantNamesArray ");
-                        System.out.println(Arrays.toString(allPlantNamesArray));
                         StringBuilder stringBuilder = new StringBuilder();
                         for (int j = 0; j < enemyList.size(); j++) {
                             stringBuilder.append(allPlantNamesArray[enemyList.get(j)]);
