@@ -1,15 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/ic_gradient_background"
     tools:context=".MainActivity">
 
-    <Button
-        android:id="@+id/buttonMyGarden"
+    <TextView
+        android:id="@+id/devise"
+        android:layout_width="190dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="89dp"
+        android:fontFamily="@font/courgette"
+        android:text="@string/devise"
+        android:textColor="@color/purblack"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/go" />
+
+    <ImageView
+        android:id="@+id/play"
+        android:layout_width="201dp"
+        android:layout_height="162dp"
+        android:layout_marginTop="51dp"
+        android:layout_marginBottom="33dp"
+        android:contentDescription="@null"
+        android:src="@drawable/icon_s_g"
+        app:layout_constraintBottom_toTopOf="@+id/welcome"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/welcome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/my_garden" />
+        android:layout_marginBottom="28dp"
+        android:fontFamily="@font/courgette"
+        android:text="@string/welcome_message"
+        android:textColor="@color/purblack"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/textView"
+        app:layout_constraintEnd_toEndOf="@+id/textView"
+        app:layout_constraintTop_toBottomOf="@+id/play" />
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+    <Button
+        android:id="@+id/go"
+        android:layout_width="166dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="82dp"
+        android:background="@drawable/roundcorner"
+        android:fontFamily="@font/courgette"
+        android:text="@string/c_est_parti"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        app:layout_constraintBottom_toTopOf="@+id/devise"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="38dp"
+        android:layout_marginBottom="60dp"
+        android:text="@string/optimiser_et_vender_vos_r_coltes_en_toute_simplicit"
+        app:layout_constraintBottom_toTopOf="@+id/go"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/welcome" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
