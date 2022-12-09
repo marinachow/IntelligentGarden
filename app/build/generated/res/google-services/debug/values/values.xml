@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="default_web_client_id" translatable="false">401967377036-97ilp77413a6i7amm7ou38ogj6hirk5c.apps.googleusercontent.com</string>
+    <string name="gcm_defaultSenderId" translatable="false">401967377036</string>
+    <string name="google_api_key" translatable="false">AIzaSyBrsetnKFQknTzKs_aex-SQNKT5sv0Z8IU</string>
+    <string name="google_app_id" translatable="false">1:401967377036:android:c55766b71e35a82dc4e9a9</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyBrsetnKFQknTzKs_aex-SQNKT5sv0Z8IU</string>
+    <string name="google_storage_bucket" translatable="false">intelligentgarden-6d88b.appspot.com</string>
+    <string name="project_id" translatable="false">intelligentgarden-6d88b</string>
+</resources>
