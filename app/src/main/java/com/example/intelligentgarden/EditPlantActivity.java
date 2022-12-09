@@ -22,13 +22,20 @@ import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 public class EditPlantActivity extends AppCompatActivity {
-    List<String> allPlantNamesList = getAllPlants().stream().map(Plant::getName).collect(Collectors.toList());
-    String[] allPlantNamesArray = allPlantNamesList.toArray(new String[allPlantNamesList.size()]);
+    private List<String> allPlantNamesList = new ArrayList<>();
+    private String[] allPlantNamesArray;
+    private boolean[] selectedEnemies;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_plant);
+
+        if (getAllPlants() != null) {
+            allPlantNamesList = getAllPlants().stream().map(Plant::getName).collect(Collectors.toList());
+            allPlantNamesArray = allPlantNamesList.toArray(new String[allPlantNamesList.size()]);
+            selectedEnemies = new boolean[allPlantNamesArray.length];
+        }
 
         final int id = getIntent().getIntExtra("id", 0);
         String name = getIntent().getStringExtra("name");
@@ -46,11 +53,11 @@ public class EditPlantActivity extends AppCompatActivity {
         int numCols = getIntent().getIntExtra("numCols", 1);
 
         TextView textViewEnemies = findViewById(R.id.textViewEnemies);
-        boolean[] selectedEnemies = new boolean[allPlantNamesArray.length];
+
         ArrayList<String> finalSelectedEnemies = new ArrayList<>();
         ArrayList<Integer> enemyList = new ArrayList<>();
 
-        if(id!=0){
+        if (id!=0) {
             idTxt.setText(""+id);
             nameEditTxt.setText(name);
             qtyEditTxt.setText(""+qty);
@@ -189,13 +196,13 @@ public class EditPlantActivity extends AppCompatActivity {
             connectionRest.execute("GET");
             String listJsonObjs = connectionRest.get();
             if (listJsonObjs != null) {
-                return connectionRest.parse(listJsonObjs);
+                return connectionRest.parsePlant(listJsonObjs);
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
-        return null;
+        return new ArrayList<>();
     }
 }

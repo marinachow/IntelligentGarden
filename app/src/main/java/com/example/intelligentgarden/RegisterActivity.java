@@ -20,11 +20,9 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class RegisterActivity extends AppCompatActivity {
     EditText mFullName, mEmail, mPassword, mPhone;
-    Button mRegisterBtn;
-    TextView mLoginBtn;
+    Button mRegisterBtn, mLoginBtn;
     FirebaseAuth fAuth;
     ProgressBar progressBar;
-    Button mButton2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,15 +33,13 @@ public class RegisterActivity extends AppCompatActivity {
         mPassword = findViewById(R.id.Password);
         mPhone = findViewById(R.id.Phone);
         mRegisterBtn = findViewById(R.id.RegisterBtn);
-        mLoginBtn = findViewById(R.id.createText2);
-        mButton2= findViewById(R.id.button2);
+        mLoginBtn = findViewById(R.id.LoginHereBtn);
 
         fAuth = FirebaseAuth.getInstance();
         progressBar = findViewById(R.id.progressBar);
 
         if (fAuth.getCurrentUser() != null) {
-            startActivity(new Intent(getApplicationContext(), MainActivity2.class));
-            finish();
+            FirebaseAuth.getInstance().signOut();
         }
 
         mRegisterBtn.setOnClickListener(new View.OnClickListener() {
@@ -67,41 +63,25 @@ public class RegisterActivity extends AppCompatActivity {
                 progressBar.setVisibility(View.VISIBLE);
 
                 //register the user in Firbase
-
                 fAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             Toast.makeText(RegisterActivity.this, "User created", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(getApplicationContext(), MainActivity2.class));
+                            startActivity(new Intent(getApplicationContext(), HomeActivity.class));
                         } else {
                             Toast.makeText(RegisterActivity.this, "Error: "+task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-
                         }
-
                     }
-
-
                 });
             }
-
-
         });
 
-        /*mRegisterBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(RegisterActivity.this, .class));
-            }
-
-        });*/
-        mButton2.setOnClickListener(new View.OnClickListener() {
+        mLoginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
-
             }
-
         });
     }
 }

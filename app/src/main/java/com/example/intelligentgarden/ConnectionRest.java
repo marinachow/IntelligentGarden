@@ -3,6 +3,8 @@ package com.example.intelligentgarden;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -16,11 +18,11 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.List;
 
 public class ConnectionRest extends AsyncTask<String, Void, String> {
-    private final static String URL = "https://api.munier.me/gr6/plant/";
+    private final static String URL = "https://api.munier.me/";
     private JSONObject jsonObj = null;
+    private String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
     protected String doInBackground(String... strings) {
         try {
@@ -34,11 +36,10 @@ public class ConnectionRest extends AsyncTask<String, Void, String> {
     }
 
     public String get(String methode) throws IOException, JSONException {
-        String url = URL;
+        String url = URL + uid + "/plants/";
         InputStream is = null;
         String parameters = "";
-        Log.v("methode", methode);
-        if (!methode.equals("POST") && (jsonObj != null)) {
+        if (!methode.equals("POST") && !methode.equals("EDIT_SURFACE") && (jsonObj != null)) {
             url += jsonObj.getInt("id");
         }
         if (jsonObj != null) {
@@ -46,18 +47,36 @@ public class ConnectionRest extends AsyncTask<String, Void, String> {
                 jsonObj.remove("id");
             }
             parameters  = "data="+ URLEncoder.encode(jsonObj.toString(), "utf-8");
-            Log.v("URL", url+" "+parameters);
         }
+        if (methode.equals("GET_SURFACE")) {
+            methode = "GET";
+            url = URL + uid + "/dimensions/1";
+        }
+        if (methode.equals("CREATE_SURFACE")) {
+            jsonObj = new JSONObject();
+            jsonObj.put("numRows", 1);
+            jsonObj.put("numCols", 1);
+            methode = "POST";
+            url = URL + uid + "/dimensions/1";
+            parameters  = "data="+ URLEncoder.encode(jsonObj.toString(), "utf-8");
+        }
+        if (methode.equals("EDIT_SURFACE")) {
+            if (jsonObj != null) {
+                methode = "PUT";
+                url = URL + uid + "/dimensions/1";
+            }
+        }
+        Log.v("methode", methode);
+        Log.v("URL", url+" "+parameters);
         try {
             final HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();
             conn.setRequestMethod(methode);
 
-            // Pour les methode POST et PUT on envoie les parametre avec l'OutputStreamWriter
             if (methode.equals("POST")||methode.equals("PUT")){
                 conn.setDoInput(true);
                 conn.setDoOutput(true);
                 OutputStreamWriter out = new OutputStreamWriter(conn.getOutputStream());
-                out.write(parameters);// here i sent the parameter
+                out.write(parameters);
                 out.close();
             } else {
                 conn.setDoInput(true);
@@ -65,10 +84,8 @@ public class ConnectionRest extends AsyncTask<String, Void, String> {
             }
 
             is = conn.getInputStream();
-            // Lit le InputStream et l'enregistre dans une string
             return readIt(is);
         } finally {
-            // Pour etre sur que le InputStream soit ferme apres avoir quitter l'application
             if (is != null) {
                 is.close();
             }
@@ -86,7 +103,7 @@ public class ConnectionRest extends AsyncTask<String, Void, String> {
         return response.toString();
     }
 
-    public ArrayList<Plant> parse(final String json) {
+    public ArrayList<Plant> parsePlant(final String json) {
         try {
             final ArrayList plants = new ArrayList<>();
             final JSONArray jPlantArray = new JSONArray(json);
@@ -94,6 +111,17 @@ public class ConnectionRest extends AsyncTask<String, Void, String> {
                 plants.add(new Plant(jPlantArray.optJSONObject(i)));
             }
             return plants;
+        } catch (JSONException e) {
+            Log.v("TAG","[JSONException] e : " + e.getMessage());
+        }
+        return null;
+    }
+
+    public Dimensions parseDimensions(final String json) {
+        try {
+            final JSONObject jDimensionsObj = new JSONObject(json);
+            final Dimensions dimensions = new Dimensions(jDimensionsObj);
+            return dimensions;
         } catch (JSONException e) {
             Log.v("TAG","[JSONException] e : " + e.getMessage());
         }
