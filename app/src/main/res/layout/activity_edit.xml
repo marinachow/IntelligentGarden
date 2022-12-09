@@ -54,7 +54,7 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="textPersonName"
-                android:text="Model"
+                android:text="Name"
                 android:textSize="14sp" />
         </TableRow>
 
@@ -75,7 +75,7 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="textPersonName"
-                android:text="Brand"
+                android:text="Type"
                 android:textSize="14sp" />
         </TableRow>
 
@@ -96,7 +96,7 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="textPersonName"
-                android:text="Fuel"
+                android:text="Number"
                 android:textSize="14sp" />
         </TableRow>
 

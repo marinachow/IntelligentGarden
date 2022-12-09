@@ -50,7 +50,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/button_buy"
+        android:id="@+id/button_back"
         android:layout_width="147dp"
         android:layout_height="72dp"
         android:backgroundTint="@color/green"
@@ -59,11 +59,11 @@
         android:layout_marginBottom="243dp"
         android:text="Acheter"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/button_sell"
+        app:layout_constraintEnd_toStartOf="@+id/button_add"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/button_sell"
+        android:id="@+id/button_add"
         android:layout_width="147dp"
         android:layout_height="72dp"
         android:backgroundTint="@color/green"
@@ -73,7 +73,7 @@
         android:text="Vendre"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/button_buy" />
+        app:layout_constraintStart_toEndOf="@+id/button_back" />
 
     <TextView
         android:id="@+id/timeline"

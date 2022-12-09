@@ -2,21 +2,17 @@ package com.example.sg;
 
 import android.content.Intent;
 import android.os.Bundle;
-import com.google.android.material.snackbar.Snackbar;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ListView;
-
 import com.example.sg.databinding.ActivityMainBinding;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
+import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
@@ -25,21 +21,23 @@ public class ShopActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)  {
+
         super.onCreate(savedInstanceState);
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        setContentView(R.layout.activity_shop);
 
         ArrayList<Product> listData = getListData();
         Log.v("ARRAY", "" + listData.get(0));
 
         if(listData!=null) {
             final ListView listView = (ListView) findViewById(R.id.listView);
+            // RecyclerView listView = (RecyclerView)findViewById(R.id.listView2);
             listView.setAdapter(new CustomListAdapter(this, listData));
-
-            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            /*listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> a, View v, int position, long id) {
                     Object o = listView.getItemAtPosition(position);
@@ -52,9 +50,9 @@ public class ShopActivity extends AppCompatActivity {
                     intent.putExtra("price", upload.getPrice());
                     startActivity(intent);
                 }
-            });
+            });*/
         }
-        Button ButtonSell = (Button) findViewById(R.id.button_sell);
+        Button ButtonSell = (Button) findViewById(R.id.button_add);
         ButtonSell.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

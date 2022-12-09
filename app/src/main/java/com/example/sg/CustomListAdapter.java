@@ -28,6 +28,7 @@ public class CustomListAdapter extends BaseAdapter {
 
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
+        Log.v("START GETVIEW", "");
         if (convertView == null) {
             convertView = layoutInflater.inflate(R.layout.activity_custom_list_view, null);
             holder = new ViewHolder();
@@ -37,12 +38,7 @@ public class CustomListAdapter extends BaseAdapter {
             holder.number = (TextView) convertView.findViewById(R.id.textNumber);
             holder.price = (TextView) convertView.findViewById(R.id.textPrice);
             convertView.setTag(holder);
-            /*
-            Log.v("ID", ""+ holder.id);
-            Log.v("NAME", ""+ holder.name);
-            Log.v("TYPE", ""+ holder.type);
-            Log.v("NUMBER", ""+ holder.number);*/
-            Log.v("GETVIEW", "");
+            Log.v("END GETVIEW", "");
 
 
         } else {

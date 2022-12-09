@@ -88,6 +88,7 @@ public class ConnectionRest extends AsyncTask<String, Void, String> {
     }
 
     public ArrayList<Product> parse(final String json) {
+        Log.v("START", "PARSE");
         try {
             final ArrayList products = new ArrayList<>();
             final JSONArray jProductArray = new JSONArray(json);
@@ -99,6 +100,7 @@ public class ConnectionRest extends AsyncTask<String, Void, String> {
         } catch (JSONException e) {
             Log.v("TAG","[JSONException] e : " + e.getMessage());
         }
+        Log.v("END", "PARSE");
         return null;
     }
 
