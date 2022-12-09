@@ -22,13 +22,24 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
-        Button buttonsell = findViewById(R.id.button_add);
+        Button buttonsell = findViewById(R.id.button_sell);
         buttonsell.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
             {
-                Intent intent = new Intent(MainActivity.this, ShopActivity.class);
+                Intent intent = new Intent(MainActivity.this, SellActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        Button buttonbuy = findViewById(R.id.button_buy);
+        buttonbuy.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                Intent intent = new Intent(MainActivity.this, BuyActivity.class);
                 startActivity(intent);
             }
         });

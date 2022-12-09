@@ -6,14 +6,14 @@ public class Product {
     private final int id;
     private final String name;
     private final String type;
-    private final String number;
+    private final int number;
     private final double price;
 
     public Product(JSONObject jObject) {
         this.id =jObject.optInt("id");
         this.name = jObject.optString("name");
         this.type = jObject.optString("type");
-        this.number = jObject.optString("number");
+        this.number = jObject.optInt("number");
         this.price = jObject.optDouble("price");
     }
 
@@ -40,7 +40,7 @@ public class Product {
         return type;
     }
 
-    public String getNumber() {
+    public int getNumber() {
         return number;
     }
 

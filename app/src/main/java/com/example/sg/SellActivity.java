@@ -7,16 +7,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import com.example.sg.databinding.ActivityMainBinding;
 
-import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
-public class ShopActivity extends AppCompatActivity {
+public class SellActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
 
@@ -28,35 +26,31 @@ public class ShopActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        setContentView(R.layout.activity_shop);
+        setContentView(R.layout.activity_sell);
 
         ArrayList<Product> listData = getListData();
         Log.v("ARRAY", "" + listData.get(0));
 
+
         if(listData!=null) {
             final ListView listView = (ListView) findViewById(R.id.listView);
-            // RecyclerView listView = (RecyclerView)findViewById(R.id.listView2);
             listView.setAdapter(new CustomListAdapter(this, listData));
-            /*listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> a, View v, int position, long id) {
-                    Object o = listView.getItemAtPosition(position);
-                    Product upload = (Product) o;
-                    Intent intent = new Intent(ShopActivity.this, EditProductActivity.class);
-                    intent.putExtra("id", upload.getId());
-                    intent.putExtra("name", upload.getName());
-                    intent.putExtra("type", upload.getType());
-                    intent.putExtra("number", upload.getNumber());
-                    intent.putExtra("price", upload.getPrice());
-                    startActivity(intent);
-                }
-            });*/
         }
-        Button ButtonSell = (Button) findViewById(R.id.button_add);
+
+        Button ButtonSell = (Button) findViewById(R.id.button_buy);
         ButtonSell.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ShopActivity.this, EditProductActivity.class);
+                Intent intent = new Intent(SellActivity.this, EditProductActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        Button ButtonBack = (Button) findViewById(R.id.button_back);
+        ButtonBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(SellActivity.this, MainActivity.class);
                 startActivity(intent);
             }
         });

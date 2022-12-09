@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/gradient_background"
-    tools:context=".ShopActivity">
+    tools:context=".SellActivity">
 
   <Button
       android:id="@+id/button_back"
@@ -17,11 +17,11 @@
       android:backgroundTint="@color/green"
       android:text="CANCEL"
       app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintEnd_toStartOf="@+id/button_add"
+      app:layout_constraintEnd_toStartOf="@+id/button_buy"
       app:layout_constraintStart_toStartOf="parent" />
 
   <Button
-      android:id="@+id/button_add"
+      android:id="@+id/button_buy"
       android:layout_width="147dp"
       android:layout_height="72dp"
       android:layout_marginStart="21dp"

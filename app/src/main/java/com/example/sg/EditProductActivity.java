@@ -22,7 +22,7 @@ public class EditProductActivity extends AppCompatActivity {
         final int id = getIntent().getIntExtra("id", 0);
         String name = getIntent().getStringExtra("name");
         String type = getIntent().getStringExtra("type");
-        String number = getIntent().getStringExtra("number");
+        int number = getIntent().getIntExtra("number", 1);
         double price = getIntent().getDoubleExtra("price", 1.0);
 
         final EditText nameEditTxt = (EditText) findViewById(R.id.nameEditTxt);
@@ -38,7 +38,7 @@ public class EditProductActivity extends AppCompatActivity {
             idTxt.setText(""+id);
             nameEditTxt.setText(name);
             typeEditTxt.setText(type);
-            numberEditTxt.setText(number);
+            numberEditTxt.setText(""+number);
             priceEditTxt.setText(""+price);
             buttonCancel.setText("Supprimer");
             buttonOk.setText("Modifier");
@@ -58,7 +58,7 @@ public class EditProductActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 }
-                Intent intent = new Intent(EditProductActivity.this, ShopActivity.class);
+                Intent intent = new Intent(EditProductActivity.this, SellActivity.class);
                 startActivity(intent);
             }
         });
@@ -74,7 +74,7 @@ public class EditProductActivity extends AppCompatActivity {
                     }
                     product.put("name", nameEditTxt.getText().toString());
                     product.put("type", typeEditTxt.getText().toString());
-                    product.put("number", numberEditTxt.getText().toString());
+                    product.put("number", Integer.parseInt(numberEditTxt.getText().toString()));
                     product.put("price", Double.parseDouble(priceEditTxt.getText().toString()));
                     connectionRest.setJsonObj(product);
                     if(id!=0){
@@ -83,7 +83,7 @@ public class EditProductActivity extends AppCompatActivity {
                         connectionRest.execute("POST"); // Création
                     }
 
-                    Intent intent = new Intent(EditProductActivity.this, ShopActivity.class);
+                    Intent intent = new Intent(EditProductActivity.this, SellActivity.class);
                     startActivity(intent);
                 } catch (JSONException e) {
                     e.printStackTrace();
