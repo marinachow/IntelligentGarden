@@ -20,6 +20,7 @@ import java.util.List;
 
 public class ConnectionRest extends AsyncTask<String, Void, String> {
     private final static String URL = "https://api.munier.me/SmartGarden/product/";
+             // "";
     private JSONObject jsonObj = null;
 
     protected String doInBackground(String... strings) {

@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import com.google.android.material.snackbar.Snackbar;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -20,32 +22,39 @@ import java.util.concurrent.ExecutionException;
 
 public class ShopActivity extends AppCompatActivity {
 
-
+    private ActivityMainBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
+
         ArrayList<Product> listData = getListData();
-        final ListView listView = (ListView) findViewById(R.id.listView);
-        listView.setAdapter(new CustomListAdapter(this, listData));
+        Log.v("ARRAY", "" + listData.get(0));
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> a, View v, int position, long id) {
-                Object o = listView.getItemAtPosition(position);
-                Product upload = (Product) o;
-                Intent intent = new Intent(ShopActivity.this, EditProductActivity.class);
-                intent.putExtra("id", upload.getId());
-                intent.putExtra("name", upload.getName());
-                intent.putExtra("type", upload.getType());
-                intent.putExtra("number", upload.getNumber());
-                intent.putExtra("price", upload.getPrice());
-                startActivity(intent);
-            }
-        });
+        if(listData!=null) {
+            final ListView listView = (ListView) findViewById(R.id.listView);
+            listView.setAdapter(new CustomListAdapter(this, listData));
 
-        ImageButton ButtonSell = (ImageButton) findViewById(R.id.button_sell);
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> a, View v, int position, long id) {
+                    Object o = listView.getItemAtPosition(position);
+                    Product upload = (Product) o;
+                    Intent intent = new Intent(ShopActivity.this, EditProductActivity.class);
+                    intent.putExtra("id", upload.getId());
+                    intent.putExtra("name", upload.getName());
+                    intent.putExtra("type", upload.getType());
+                    intent.putExtra("number", upload.getNumber());
+                    intent.putExtra("price", upload.getPrice());
+                    startActivity(intent);
+                }
+            });
+        }
+        Button ButtonSell = (Button) findViewById(R.id.button_sell);
         ButtonSell.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -60,6 +69,7 @@ public class ShopActivity extends AppCompatActivity {
             ConnectionRest connectionRest = new ConnectionRest();
             connectionRest.execute("GET");
             String listJsonObjs = connectionRest.get();
+            Log.v("LIST", listJsonObjs);
             if(listJsonObjs != null) {
                 return connectionRest.parse(listJsonObjs);
             }

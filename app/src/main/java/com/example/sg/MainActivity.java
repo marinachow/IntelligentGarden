@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.example.sg.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
+
     private ActivityMainBinding binding;
 
     @Override

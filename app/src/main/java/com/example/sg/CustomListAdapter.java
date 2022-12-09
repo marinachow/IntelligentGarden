@@ -23,6 +23,7 @@ public class CustomListAdapter extends BaseAdapter {
         this.context = aContext;
         this.listData = listData;
         layoutInflater = LayoutInflater.from(aContext);
+        Log.v("CONST", ""+listData.get(0));
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -36,6 +37,14 @@ public class CustomListAdapter extends BaseAdapter {
             holder.number = (TextView) convertView.findViewById(R.id.textNumber);
             holder.price = (TextView) convertView.findViewById(R.id.textPrice);
             convertView.setTag(holder);
+            /*
+            Log.v("ID", ""+ holder.id);
+            Log.v("NAME", ""+ holder.name);
+            Log.v("TYPE", ""+ holder.type);
+            Log.v("NUMBER", ""+ holder.number);*/
+            Log.v("GETVIEW", "");
+
+
         } else {
             holder = (ViewHolder) convertView.getTag();
             Log.v("position",""+position);
@@ -44,7 +53,7 @@ public class CustomListAdapter extends BaseAdapter {
         if(position % 2 == 0){
             convertView.setBackgroundColor(Color.rgb(150,245,170));
         }
-
+        Log.v("START CUSTOM","");
         Product product = this.listData.get(position);
         holder.id.setText(""+product.getId());
         holder.name.setText(product.getName());

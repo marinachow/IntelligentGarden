@@ -11,10 +11,21 @@ public class Product {
 
     public Product(JSONObject jObject) {
         this.id =jObject.optInt("id");
-        this.name = jObject.optString("Name");
+        this.name = jObject.optString("name");
         this.type = jObject.optString("type");
         this.number = jObject.optString("number");
         this.price = jObject.optDouble("price");
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", type='" + type + '\'' +
+                ", number='" + number + '\'' +
+                ", price=" + price +
+                '}';
     }
 
     public int getId() {
