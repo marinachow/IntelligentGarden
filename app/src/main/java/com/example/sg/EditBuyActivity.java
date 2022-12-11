@@ -12,7 +12,7 @@ import android.widget.TextView;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class EditProductActivity extends AppCompatActivity {
+public class EditBuyActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,27 +24,27 @@ public class EditProductActivity extends AppCompatActivity {
         String type = getIntent().getStringExtra("type");
         int number = getIntent().getIntExtra("number", 1);
         double price = getIntent().getDoubleExtra("price", 1.0);
-
+/*
         final EditText nameEditTxt = (EditText) findViewById(R.id.nameEditTxt);
         final EditText typeEditTxt = (EditText) findViewById(R.id.typeEditTxt);
         final EditText numberEditTxt = (EditText) findViewById(R.id.numberEditTxt);
         final EditText priceEditTxt = (EditText) findViewById(R.id.priceEditTxt);
         TextView idTxt = (TextView) findViewById(R.id.idEditTxt);
-
+*/
         Button buttonCancel = (Button) findViewById(R.id.button_cancel);
-        Button buttonOk = (Button) findViewById(R.id.button_pay);
-
+        Button buttonPay = (Button) findViewById(R.id.button_pay);
+/*
         if(id!=0){
             idTxt.setText(""+id);
             nameEditTxt.setText(name);
             typeEditTxt.setText(type);
             numberEditTxt.setText(""+number);
             priceEditTxt.setText(""+price);
-            buttonCancel.setText("Supprimer");
-            buttonOk.setText("Modifier");
+            buttonCancel.setText("Cancel");
+            buttonPay.setText("Pay");
         }
-
-        buttonCancel.setOnClickListener(new View.OnClickListener() {
+*/
+        buttonPay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(id!=0){ // Suppression
@@ -58,36 +58,16 @@ public class EditProductActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 }
-                Intent intent = new Intent(EditProductActivity.this, SellActivity.class);
+                Intent intent = new Intent(EditBuyActivity.this, BuyActivity.class);
                 startActivity(intent);
             }
         });
 
-        buttonOk.setOnClickListener(new View.OnClickListener() {
+        buttonCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    ConnectionRest connectionRest = new ConnectionRest();
-                    JSONObject product = new JSONObject();
-                    if(id!=0){
-                        product.put("id", id);
-                    }
-                    product.put("name", nameEditTxt.getText().toString());
-                    product.put("type", typeEditTxt.getText().toString());
-                    product.put("number", Integer.parseInt(numberEditTxt.getText().toString()));
-                    product.put("price", Double.parseDouble(priceEditTxt.getText().toString()));
-                    connectionRest.setJsonObj(product);
-                    if(id!=0){
-                        connectionRest.execute("PUT"); // Modification
-                    }else {
-                        connectionRest.execute("POST"); // Création
-                    }
-
-                    Intent intent = new Intent(EditProductActivity.this, SellActivity.class);
+                    Intent intent = new Intent(EditBuyActivity.this, BuyActivity.class);
                     startActivity(intent);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
             }
         });
     }

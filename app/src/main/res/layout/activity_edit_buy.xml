@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".EditProductActivity">
+    tools:context=".EditBuyActivity">
 
     <TableLayout
         android:id="@+id/tableLayout"
@@ -32,7 +32,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingTop="40px"
-                android:text="ID"
                 android:textSize="14sp" />
 
         </TableRow>
@@ -48,13 +47,11 @@
                 android:text="Name :"
                 android:textSize="14sp" />
 
-            <EditText
+            <TextView
                 android:id="@+id/nameEditTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="textPersonName"
-                android:text="Name"
                 android:textSize="14sp" />
         </TableRow>
 
@@ -69,13 +66,11 @@
                 android:text="Type :"
                 android:textSize="14sp" />
 
-            <EditText
+            <TextView
                 android:id="@+id/typeEditTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="textPersonName"
-                android:text="Type"
                 android:textSize="14sp" />
         </TableRow>
 
@@ -90,13 +85,11 @@
                 android:text="Nomber :"
                 android:textSize="14sp" />
 
-            <EditText
+            <TextView
                 android:id="@+id/numberEditTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="numberSigned"
-                android:text="1"
                 android:textSize="14sp" />
         </TableRow>
 
@@ -111,13 +104,11 @@
                 android:text="Price :"
                 android:textSize="14sp" />
 
-            <EditText
+            <TextView
                 android:id="@+id/priceEditTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="numberDecimal"
-                android:text="1.0"
                 android:textSize="14sp" />
         </TableRow>
 
@@ -139,7 +130,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
-        android:text="ADD"
+        android:text="PAY"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/button_cancel"
         app:layout_constraintTop_toBottomOf="@+id/tableLayout" />

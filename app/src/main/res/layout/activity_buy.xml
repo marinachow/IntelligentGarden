@@ -11,33 +11,20 @@
         android:id="@+id/button_back"
         android:layout_width="147dp"
         android:layout_height="72dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginEnd="29dp"
-        android:layout_marginBottom="40dp"
+        android:layout_marginBottom="16dp"
         android:backgroundTint="@color/green"
         android:text="CANCEL"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/button_buy"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/button_buy"
-        android:layout_width="147dp"
-        android:layout_height="72dp"
-        android:layout_marginStart="21dp"
-        android:layout_marginEnd="40dp"
-        android:layout_marginBottom="40dp"
-        android:backgroundTint="@color/green"
-        android:text="BUY"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/button_back" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ListView
         android:id="@+id/listView"
         android:layout_width="409dp"
         android:layout_height="617dp"
-        tools:layout_editor_absoluteX="1dp"
-        tools:layout_editor_absoluteY="1dp" />
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/button_back"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="1dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

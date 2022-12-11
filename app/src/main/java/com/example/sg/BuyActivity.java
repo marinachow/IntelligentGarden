@@ -41,7 +41,7 @@ public class BuyActivity extends AppCompatActivity {
                 public void onItemClick(AdapterView<?> a, View v, int position, long id) {
                     Object o = listView.getItemAtPosition(position);
                     Product upload = (Product) o;
-                    Intent intent = new Intent(BuyActivity.this, EditProductActivity.class);
+                    Intent intent = new Intent(BuyActivity.this, EditBuyActivity.class);
                     intent.putExtra("id", upload.getId());
                     intent.putExtra("name", upload.getName());
                     intent.putExtra("type", upload.getType());
@@ -51,15 +51,6 @@ public class BuyActivity extends AppCompatActivity {
                 }
             });
         }
-
-        /*Button ButtonSell = (Button) findViewById(R.id.button_buy);
-        ButtonSell.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(BuyActivity.this, EditProductActivity.class);
-                startActivity(intent);
-            }
-        });*/
 
         Button ButtonBack = (Button) findViewById(R.id.button_back);
         ButtonBack.setOnClickListener(new View.OnClickListener() {
