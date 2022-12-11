@@ -17,6 +17,8 @@ import java.util.concurrent.ExecutionException;
 
 
 public class DisplayGardenActivity extends AppCompatActivity {
+    int numRows = 1;
+    int numCols = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,8 +29,14 @@ public class DisplayGardenActivity extends AppCompatActivity {
         Button editSurfaceButton = findViewById(R.id.EditSurfaceButton);
         TableLayout gardenGrid = findViewById(R.id.tableLayout);
 
-        int numRows = getIntent().getIntExtra("numRows", 1);
-        int numCols = getIntent().getIntExtra("numCols", 1);
+        Dimensions dimensions = getDimensions();
+        if (dimensions != null) {
+            numRows = dimensions.getNumRows();
+            numCols = dimensions.getNumCols();
+        } else {
+            ConnectionRest connectionRest = new ConnectionRest();
+            connectionRest.execute("CREATE_SURFACE");
+        }
 
         addPlantButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,7 +62,7 @@ public class DisplayGardenActivity extends AppCompatActivity {
             row.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT));
             for (int j = 0; j < numCols; j++) {
                 TextView square = new TextView(this);
-                square.setText("Empty");
+                square.setText("");
                 square.setWidth(150);
                 square.setHeight(150);
                 square.setBackground(ContextCompat.getDrawable(this, R.drawable.border));
@@ -65,7 +73,7 @@ public class DisplayGardenActivity extends AppCompatActivity {
             gardenGrid.addView(row, new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT));
         }
 
-        ArrayList<Plant> allPlants = getGridData();
+        ArrayList<Plant> allPlants = getAllPlants();
         if (allPlants != null && allPlants.size() > 0) {
             int allPlantsIdx = 0;
             int curPlantCount = 0;
@@ -103,13 +111,29 @@ public class DisplayGardenActivity extends AppCompatActivity {
             }
         }
     }
-    public ArrayList<Plant> getGridData(){
-        try{
+    public ArrayList<Plant> getAllPlants(){
+        try {
             ConnectionRest connectionRest = new ConnectionRest();
             connectionRest.execute("GET");
             String listJsonObjs = connectionRest.get();
             if (listJsonObjs != null) {
-                return connectionRest.parse(listJsonObjs);
+                return connectionRest.parsePlant(listJsonObjs);
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public Dimensions getDimensions(){
+        try {
+            ConnectionRest connectionRest = new ConnectionRest();
+            connectionRest.execute("GET_SURFACE");
+            String jsonObj = connectionRest.get();
+            if (jsonObj != null) {
+                return connectionRest.parseDimensions(jsonObj);
             }
         } catch (InterruptedException e) {
             e.printStackTrace();

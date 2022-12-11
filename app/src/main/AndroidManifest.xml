@@ -20,7 +20,7 @@
         <activity android:name=".EditSurfaceActivity" />
         <activity android:name=".DisplayGardenActivity"/>
         <activity android:name=".LoginActivity" />
-        <activity android:name=".MainActivity2" />
+        <activity android:name=".HomeActivity" />
         <activity android:name=".MainActivity"
             android:exported="true">
 

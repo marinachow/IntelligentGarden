@@ -5,11 +5,15 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 
 public class EditSurfaceActivity extends AppCompatActivity {
@@ -46,6 +50,16 @@ public class EditSurfaceActivity extends AppCompatActivity {
             public void onClick(View view) {
                 int numRows = Integer.parseInt(rowsSpinner.getSelectedItem().toString());
                 int numCols = Integer.parseInt(colsSpinner.getSelectedItem().toString());
+                try {
+                    ConnectionRest connectionRest = new ConnectionRest();
+                    JSONObject jsonSurface = new JSONObject();
+                    jsonSurface.put("numRows", numRows);
+                    jsonSurface.put("numCols", numCols);
+                    connectionRest.setJsonObj(jsonSurface);
+                    connectionRest.execute("EDIT_SURFACE");
+                } catch (JSONException e) {
+                    Log.v("TAG", "[JSONException] e : " + e.getMessage());
+                }
                 Intent intent = new Intent(EditSurfaceActivity.this, DisplayGardenActivity.class);
                 intent.putExtra("numRows", numRows);
                 intent.putExtra("numCols", numCols);

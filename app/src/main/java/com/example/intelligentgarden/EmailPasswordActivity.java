@@ -1,4 +1,4 @@
-package com.example.smartgarden;
+package com.example.intelligentgarden;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;

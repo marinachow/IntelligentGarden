@@ -19,13 +19,12 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class LoginActivity extends AppCompatActivity {
-
     EditText mEmail, mPassword;
-    TextView mCreateBtn;
     Button mLoginBtn;
     TextView mRegisterBtn;
     FirebaseAuth fAuth;
     ProgressBar progressBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,7 +35,11 @@ public class LoginActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.progressBar);
         fAuth = FirebaseAuth.getInstance();
         mLoginBtn = findViewById(R.id.LoginBtn);
-        mRegisterBtn = findViewById(R.id.RegisterBtn);
+        mRegisterBtn = findViewById(R.id.RegisterText);
+
+        if (fAuth.getCurrentUser() != null) {
+            FirebaseAuth.getInstance().signOut();
+        }
 
         mLoginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,22 +54,17 @@ public class LoginActivity extends AppCompatActivity {
                     mPassword.setError("Password is required");
                     return;
                 }
-                if (password.length() < 6) {
-                    mPassword.setError("Password must be at least 6 charaters");
-                    return;
-                }
                 progressBar.setVisibility(View.VISIBLE);
 
                 //authenticate the user
-
                 fAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()){
-                            Toast.makeText(LoginActivity.this, "Logged is succesfully", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(getApplicationContext(), MainActivity2.class));
-                        }else{
-                            Toast.makeText(LoginActivity.this, "Error: "+task.getException().getMessage(), Toast.LENGTH_SHORT).show(); /*task.getException().getMessage()*/
+                        if (task.isSuccessful()) {
+                            Toast.makeText(LoginActivity.this, "Login was succesfull", Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                        } else {
+                            Toast.makeText(LoginActivity.this, "Error: "+task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                             progressBar.setVisibility(View.GONE);
                         }
                     }
@@ -74,11 +72,10 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        mLoginBtn.setOnClickListener(new View.OnClickListener() {
+        mRegisterBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(LoginActivity.this, MainActivity2.class));
-
+                startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
             }
         });
     }
