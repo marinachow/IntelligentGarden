@@ -120,6 +120,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:text="CANCEL"
+        android:backgroundTint="@color/green"
         app:layout_constraintEnd_toStartOf="@+id/button_pay"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tableLayout" />
@@ -130,6 +131,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
+        android:backgroundTint="@color/green"
         android:text="PAY"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/button_cancel"

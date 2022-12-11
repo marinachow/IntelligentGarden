@@ -17,7 +17,7 @@
         android:theme="@style/Theme.SG"
         tools:targetApi="31">
         <activity
-            android:name=".PayWaitActivity"
+            android:name=".PayActivity"
             android:exported="false"
             android:theme="@style/Theme.SG.NoActionBar" >
         </activity>

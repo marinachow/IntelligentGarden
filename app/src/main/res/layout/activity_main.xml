@@ -75,18 +75,4 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/button_back" />
 
-    <TextView
-        android:id="@+id/timeline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="185dp"
-        android:layout_marginTop="55dp"
-        android:layout_marginEnd="185dp"
-        android:layout_marginBottom="55dp"
-        android:text="Date"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/button_garden"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textWelcome" />
 </androidx.constraintlayout.widget.ConstraintLayout>
