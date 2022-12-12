@@ -49,11 +49,11 @@ public class EditProductActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(id!=0){ // Suppression
                     try {
-                        GardenConnectionRest gardenConnectionRest = new GardenConnectionRest();
+                        ProductConnectionRest productConnectionRest = new ProductConnectionRest();
                         JSONObject product = new JSONObject();
                         product.put("id", id);
-                        gardenConnectionRest.setJsonObj(product);
-                        gardenConnectionRest.execute("DELETE");
+                        productConnectionRest.setJsonObj(product);
+                        productConnectionRest.execute("DELETE");
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -67,7 +67,7 @@ public class EditProductActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
-                    GardenConnectionRest gardenConnectionRest = new GardenConnectionRest();
+                    ProductConnectionRest productConnectionRest = new ProductConnectionRest();
                     JSONObject product = new JSONObject();
                     if(id!=0){
                         product.put("id", id);
@@ -76,11 +76,11 @@ public class EditProductActivity extends AppCompatActivity {
                     product.put("type", typeEditTxt.getText().toString());
                     product.put("qty", Integer.parseInt(qtyEditTxt.getText().toString()));
                     product.put("price", Double.parseDouble(priceEditTxt.getText().toString()));
-                    gardenConnectionRest.setJsonObj(product);
+                    productConnectionRest.setJsonObj(product);
                     if(id!=0){
-                        gardenConnectionRest.execute("PUT"); // Modification
+                        productConnectionRest.execute("PUT"); // Modification
                     }else {
-                        gardenConnectionRest.execute("POST"); // Création
+                        productConnectionRest.execute("POST"); // Création
                     }
 
                     Intent intent = new Intent(EditProductActivity.this, SellActivity.class);

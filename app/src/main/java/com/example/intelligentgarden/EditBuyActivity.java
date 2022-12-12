@@ -53,11 +53,11 @@ public class EditBuyActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(id!=0){ // Suppression
                     try {
-                        GardenConnectionRest gardenConnectionRest = new GardenConnectionRest();
+                        ProductConnectionRest productConnectionRest = new ProductConnectionRest();
                         JSONObject product = new JSONObject();
                         product.put("id", id);
-                        gardenConnectionRest.setJsonObj(product);
-                        gardenConnectionRest.execute("DELETE");
+                        productConnectionRest.setJsonObj(product);
+                        productConnectionRest.execute("DELETE");
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
