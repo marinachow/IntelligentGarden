@@ -62,4 +62,7 @@
     <string name="logout">LOGOUT</string>
     <string name="thank_you_for_your_purchase">Thank you for your purchase!</string>
     <string name="home">Home</string>
+    <string name="select_enemies">Select Enemies</string>
+    <string name="cancel">Cancel</string>
+    <string name="add">Add</string>
 </resources>

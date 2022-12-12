@@ -24,11 +24,11 @@ public class SellActivity extends AppCompatActivity {
 
 
         if(listData!=null) {
-            final ListView listView = (ListView) findViewById(R.id.listView);
+            final ListView listView = findViewById(R.id.listView);
             listView.setAdapter(new CustomListAdapter(this, listData));
         }
 
-        Button ButtonSell = (Button) findViewById(R.id.button_buy);
+        Button ButtonSell = findViewById(R.id.button_buy);
         ButtonSell.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -37,7 +37,7 @@ public class SellActivity extends AppCompatActivity {
             }
         });
 
-        Button ButtonBack = (Button) findViewById(R.id.button_back);
+        Button ButtonBack = findViewById(R.id.button_back);
         ButtonBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

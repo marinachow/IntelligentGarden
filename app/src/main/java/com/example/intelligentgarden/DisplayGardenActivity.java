@@ -26,6 +26,7 @@ public class DisplayGardenActivity extends AppCompatActivity {
 
         Button addPlantButton = findViewById(R.id.AddPlantButton);
         Button editSurfaceButton = findViewById(R.id.EditSurfaceButton);
+        Button homeButton = findViewById(R.id.HomeButton);
         TableLayout gardenGrid = findViewById(R.id.tableLayout);
 
         Dimensions dimensions = getDimensions();
@@ -56,6 +57,15 @@ public class DisplayGardenActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        homeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(DisplayGardenActivity.this, HomeActivity.class);
+                startActivity(intent);
+            }
+        });
+
         for (int i = 0; i < numRows; i++) {
             TableRow row = new TableRow(this);
             row.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT));
