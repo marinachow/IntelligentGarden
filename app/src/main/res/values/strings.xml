@@ -60,4 +60,6 @@
     <string name="title_activity_register">RegisterActivity</string>
     <string name="welcome_to_the_home_page">Welcome to the home page</string>
     <string name="logout">LOGOUT</string>
+    <string name="thank_you_for_your_purchase">Thank you for your purchase!</string>
+    <string name="home">Home</string>
 </resources>

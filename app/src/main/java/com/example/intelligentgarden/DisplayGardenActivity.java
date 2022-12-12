@@ -15,7 +15,6 @@ import androidx.core.content.ContextCompat;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
-
 public class DisplayGardenActivity extends AppCompatActivity {
     int numRows = 1;
     int numCols = 1;
@@ -34,8 +33,8 @@ public class DisplayGardenActivity extends AppCompatActivity {
             numRows = dimensions.getNumRows();
             numCols = dimensions.getNumCols();
         } else {
-            ConnectionRest connectionRest = new ConnectionRest();
-            connectionRest.execute("CREATE_SURFACE");
+            GardenConnectionRest gardenConnectionRest = new GardenConnectionRest();
+            gardenConnectionRest.execute("CREATE_SURFACE");
         }
 
         addPlantButton.setOnClickListener(new View.OnClickListener() {
@@ -113,11 +112,11 @@ public class DisplayGardenActivity extends AppCompatActivity {
     }
     public ArrayList<Plant> getAllPlants(){
         try {
-            ConnectionRest connectionRest = new ConnectionRest();
-            connectionRest.execute("GET");
-            String listJsonObjs = connectionRest.get();
+            GardenConnectionRest gardenConnectionRest = new GardenConnectionRest();
+            gardenConnectionRest.execute("GET");
+            String listJsonObjs = gardenConnectionRest.get();
             if (listJsonObjs != null) {
-                return connectionRest.parsePlant(listJsonObjs);
+                return gardenConnectionRest.parsePlant(listJsonObjs);
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -129,11 +128,11 @@ public class DisplayGardenActivity extends AppCompatActivity {
 
     public Dimensions getDimensions(){
         try {
-            ConnectionRest connectionRest = new ConnectionRest();
-            connectionRest.execute("GET_SURFACE");
-            String jsonObj = connectionRest.get();
+            GardenConnectionRest gardenConnectionRest = new GardenConnectionRest();
+            gardenConnectionRest.execute("GET_SURFACE");
+            String jsonObj = gardenConnectionRest.get();
             if (jsonObj != null) {
-                return connectionRest.parseDimensions(jsonObj);
+                return gardenConnectionRest.parseDimensions(jsonObj);
             }
         } catch (InterruptedException e) {
             e.printStackTrace();

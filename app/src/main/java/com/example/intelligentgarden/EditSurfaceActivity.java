@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
@@ -51,12 +50,12 @@ public class EditSurfaceActivity extends AppCompatActivity {
                 int numRows = Integer.parseInt(rowsSpinner.getSelectedItem().toString());
                 int numCols = Integer.parseInt(colsSpinner.getSelectedItem().toString());
                 try {
-                    ConnectionRest connectionRest = new ConnectionRest();
+                    GardenConnectionRest gardenConnectionRest = new GardenConnectionRest();
                     JSONObject jsonSurface = new JSONObject();
                     jsonSurface.put("numRows", numRows);
                     jsonSurface.put("numCols", numCols);
-                    connectionRest.setJsonObj(jsonSurface);
-                    connectionRest.execute("EDIT_SURFACE");
+                    gardenConnectionRest.setJsonObj(jsonSurface);
+                    gardenConnectionRest.execute("EDIT_SURFACE");
                 } catch (JSONException e) {
                     Log.v("TAG", "[JSONException] e : " + e.getMessage());
                 }

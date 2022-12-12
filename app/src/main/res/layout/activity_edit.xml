@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradient_background"
-    tools:context=".EditPlantActivity">
+    tools:context=".EditProductActivity">
 
     <TableLayout
         android:id="@+id/tableLayout"
@@ -22,14 +21,14 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/textViewIdLabel"
+                android:id="@+id/textview_lbid"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="ID"
                 android:textSize="14sp" />
 
             <TextView
-                android:id="@+id/textViewId"
+                android:id="@+id/idEditTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingTop="40px"
@@ -43,18 +42,19 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/textViewName"
+                android:id="@+id/textview_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Plant name :"
+                android:text="Name :"
                 android:textSize="14sp" />
 
             <EditText
-                android:id="@+id/editTextName"
+                android:id="@+id/nameEditTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="textPersonName"
+                android:text="Name"
                 android:textSize="14sp" />
         </TableRow>
 
@@ -63,18 +63,41 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/textViewNum"
+                android:id="@+id/textview_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Type :"
+                android:textSize="14sp" />
+
+            <EditText
+                android:id="@+id/typeEditTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:text="Type"
+                android:textSize="14sp" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/textview_number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Quantity :"
                 android:textSize="14sp" />
 
             <EditText
-                android:id="@+id/editTextQty"
+                android:id="@+id/numberEditTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="number" />
+                android:inputType="numberSigned"
+                android:text="1"
+                android:textSize="14sp" />
         </TableRow>
 
         <TableRow
@@ -82,38 +105,44 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/textViewEnemies"
+                android:id="@+id/textview_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@android:drawable/editbox_background"
-                android:drawableRight="@android:drawable/arrow_down_float"
-                android:drawablePadding="16dp"
+                android:text="Price :"
+                android:textSize="14sp" />
+
+            <EditText
+                android:id="@+id/priceEditTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:ems="10"
-                android:hint="Select Enemies" />
+                android:inputType="numberDecimal"
+                android:text="1.0"
+                android:textSize="14sp" />
         </TableRow>
 
     </TableLayout>
 
     <Button
-        android:id="@+id/buttonCancel"
+        android:id="@+id/button_cancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:text="Cancel"
-        app:layout_constraintEnd_toStartOf="@+id/buttonOk"
+        android:text="CANCEL"
+        android:backgroundTint="@color/green"
+        app:layout_constraintEnd_toStartOf="@+id/button_pay"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tableLayout" />
 
     <Button
-        android:id="@+id/buttonOk"
+        android:id="@+id/button_pay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginLeft="24dp"
         android:layout_marginTop="24dp"
-        android:text="Add"
+        android:backgroundTint="@color/green"
+        android:text="ADD"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/buttonCancel"
+        app:layout_constraintStart_toEndOf="@+id/button_cancel"
         app:layout_constraintTop_toBottomOf="@+id/tableLayout" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

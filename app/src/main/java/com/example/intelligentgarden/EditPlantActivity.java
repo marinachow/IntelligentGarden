@@ -15,7 +15,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -145,11 +144,11 @@ public class EditPlantActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(id!=0){ // Suppression
                     try {
-                        ConnectionRest connectionRest = new ConnectionRest();
+                        GardenConnectionRest gardenConnectionRest = new GardenConnectionRest();
                         JSONObject plant = new JSONObject();
                         plant.put("id", id);
-                        connectionRest.setJsonObj(plant);
-                        connectionRest.execute("DELETE");
+                        gardenConnectionRest.setJsonObj(plant);
+                        gardenConnectionRest.execute("DELETE");
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -165,7 +164,7 @@ public class EditPlantActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
-                    ConnectionRest connectionRest = new ConnectionRest();
+                    GardenConnectionRest gardenConnectionRest = new GardenConnectionRest();
                     JSONObject plant = new JSONObject();
                     if(id!=0){
                         plant.put("id", id);
@@ -173,11 +172,11 @@ public class EditPlantActivity extends AppCompatActivity {
                     plant.put("name", nameEditTxt.getText().toString());
                     plant.put("qty", Integer.parseInt(qtyEditTxt.getText().toString()));
                     plant.put("enemyNames", finalSelectedEnemies);
-                    connectionRest.setJsonObj(plant);
+                    gardenConnectionRest.setJsonObj(plant);
                     if(id!=0){
-                        connectionRest.execute("PUT"); // Modification
+                        gardenConnectionRest.execute("PUT"); // Modification
                     }else {
-                        connectionRest.execute("POST"); // Création
+                        gardenConnectionRest.execute("POST"); // Création
                     }
 
                     Intent intent = new Intent(EditPlantActivity.this, DisplayGardenActivity.class);
@@ -192,11 +191,11 @@ public class EditPlantActivity extends AppCompatActivity {
     }
     public ArrayList<Plant> getAllPlants(){
         try{
-            ConnectionRest connectionRest = new ConnectionRest();
-            connectionRest.execute("GET");
-            String listJsonObjs = connectionRest.get();
+            GardenConnectionRest gardenConnectionRest = new GardenConnectionRest();
+            gardenConnectionRest.execute("GET");
+            String listJsonObjs = gardenConnectionRest.get();
             if (listJsonObjs != null) {
-                return connectionRest.parsePlant(listJsonObjs);
+                return gardenConnectionRest.parsePlant(listJsonObjs);
             }
         } catch (InterruptedException e) {
             e.printStackTrace();

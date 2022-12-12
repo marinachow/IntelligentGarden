@@ -17,6 +17,9 @@ public class HomeActivity extends AppCompatActivity {
             setContentView(R.layout.activity_home);
 
             Button gardenButton = findViewById(R.id.button_garden);
+            Button sellButton = findViewById(R.id.button_sell);
+            Button buyButton = findViewById(R.id.button_buy);
+            Button logoutButton = findViewById(R.id.button_logout);
             gardenButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -24,12 +27,31 @@ public class HomeActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
             });
-        }
 
-        public  void logout(View view){
-            FirebaseAuth.getInstance().signOut();
-            startActivity(new Intent(getApplicationContext(),LoginActivity.class));
-            finish();
+            sellButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(HomeActivity.this, SellActivity.class);
+                    startActivity(intent);
+                }
+            });
+
+            buyButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(HomeActivity.this, BuyActivity.class);
+                    startActivity(intent);
+                }
+            });
+
+            logoutButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    FirebaseAuth.getInstance().signOut();
+                    startActivity(new Intent(getApplicationContext(),LoginActivity.class));
+                    finish();
+                }
+            });
         }
 }
 

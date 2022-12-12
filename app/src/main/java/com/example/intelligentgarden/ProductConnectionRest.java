@@ -3,8 +3,6 @@ package com.example.intelligentgarden;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.google.firebase.auth.FirebaseAuth;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -19,10 +17,9 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 
-public class ConnectionRest extends AsyncTask<String, Void, String> {
-    private final static String URL = "https://api.munier.me/";
+public class ProductConnectionRest extends AsyncTask<String, Void, String> {
+    private final static String URL = "https://api.munier.me/SmartGarden/product/";
     private JSONObject jsonObj = null;
-    private String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
     protected String doInBackground(String... strings) {
         try {
@@ -36,49 +33,31 @@ public class ConnectionRest extends AsyncTask<String, Void, String> {
     }
 
     public String get(String methode) throws IOException, JSONException {
-        String url = URL + uid + "/plants/";
+        String url = URL;
         InputStream is = null;
         String parameters = "";
-        if (!methode.equals("POST") && !methode.equals("EDIT_SURFACE") && (jsonObj != null)) {
+        Log.v("methode", methode);
+        if(!methode.equals("POST")&&(jsonObj!=null)){
             url += jsonObj.getInt("id");
         }
-        if (jsonObj != null) {
-            if (methode.equals("PUT")) {
+        if(jsonObj != null){
+            if(methode.equals("PUT")){
                 jsonObj.remove("id");
             }
             parameters  = "data="+ URLEncoder.encode(jsonObj.toString(), "utf-8");
+            Log.v("URL", url+" "+parameters);
         }
-        if (methode.equals("GET_SURFACE")) {
-            methode = "GET";
-            url = URL + uid + "/dimensions/1";
-        }
-        if (methode.equals("CREATE_SURFACE")) {
-            jsonObj = new JSONObject();
-            jsonObj.put("numRows", 1);
-            jsonObj.put("numCols", 1);
-            methode = "POST";
-            url = URL + uid + "/dimensions/1";
-            parameters  = "data="+ URLEncoder.encode(jsonObj.toString(), "utf-8");
-        }
-        if (methode.equals("EDIT_SURFACE")) {
-            if (jsonObj != null) {
-                methode = "PUT";
-                url = URL + uid + "/dimensions/1";
-            }
-        }
-        Log.v("methode", methode);
-        Log.v("URL", url+" "+parameters);
         try {
             final HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();
             conn.setRequestMethod(methode);
 
-            if (methode.equals("POST")||methode.equals("PUT")){
+            if(methode.equals("POST")||methode.equals("PUT")){
                 conn.setDoInput(true);
                 conn.setDoOutput(true);
                 OutputStreamWriter out = new OutputStreamWriter(conn.getOutputStream());
-                out.write(parameters);
+                out.write(parameters);// here i sent the parameter
                 out.close();
-            } else {
+            }else{
                 conn.setDoInput(true);
                 conn.connect();
             }
@@ -103,28 +82,20 @@ public class ConnectionRest extends AsyncTask<String, Void, String> {
         return response.toString();
     }
 
-    public ArrayList<Plant> parsePlant(final String json) {
+    public ArrayList<Product> parse(final String json) {
+        Log.v("START", "PARSE");
         try {
-            final ArrayList plants = new ArrayList<>();
-            final JSONArray jPlantArray = new JSONArray(json);
-            for (int i = 0; i < jPlantArray.length(); i++) {
-                plants.add(new Plant(jPlantArray.optJSONObject(i)));
+            final ArrayList products = new ArrayList<>();
+            final JSONArray jProductArray = new JSONArray(json);
+            for (int i = 0; i < jProductArray.length(); i++) {
+                products.add(new Product(jProductArray.optJSONObject(i)));
             }
-            return plants;
-        } catch (JSONException e) {
-            Log.v("TAG","[JSONException] e : " + e.getMessage());
-        }
-        return null;
-    }
 
-    public Dimensions parseDimensions(final String json) {
-        try {
-            final JSONObject jDimensionsObj = new JSONObject(json);
-            final Dimensions dimensions = new Dimensions(jDimensionsObj);
-            return dimensions;
+            return products;
         } catch (JSONException e) {
             Log.v("TAG","[JSONException] e : " + e.getMessage());
         }
+        Log.v("END", "PARSE");
         return null;
     }
 

@@ -20,6 +20,11 @@
         <activity android:name=".DisplayGardenActivity"/>
         <activity android:name=".LoginActivity" />
         <activity android:name=".HomeActivity" />
+        <activity android:name=".PayActivity" />
+        <activity android:name=".EditBuyActivity" />
+        <activity android:name=".BuyActivity" />
+        <activity android:name=".SellActivity" />
+        <activity android:name=".EditProductActivity" />
         <activity android:name=".MainActivity"
             android:exported="true">
 
