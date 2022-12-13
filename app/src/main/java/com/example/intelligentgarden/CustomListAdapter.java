@@ -52,8 +52,8 @@ public class CustomListAdapter extends BaseAdapter {
         holder.id.setText(""+product.getId());
         holder.name.setText(product.getName());
         holder.type.setText(product.getType());
-        holder.qty.setText(""+product.getQty());
-        holder.price.setText(""+product.getPrice());
+        holder.qty.setText("Qty: "+product.getQty());
+        holder.price.setText(""+product.getPrice() + "€");
         Log.v("CUSTOM",""+product.getName()+" "+product.getType());
 
         return convertView;
